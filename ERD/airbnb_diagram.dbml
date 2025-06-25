@@ -1,0 +1,62 @@
+Project airbnb_database {
+  database_type: "PostgreSQL"
+  note: "ER Diagram for an Airbnb-like application"
+}
+
+Table users {
+  user_id UUID [pk, not null, unique, note: 'Primary Key']
+  first_name VARCHAR [not null]
+  last_name VARCHAR [not null]
+  email VARCHAR [not null, unique, note: 'Indexed']
+  password_hash VARCHAR [not null]
+  phone_number VARCHAR
+  role VARCHAR [not null, note: 'ENUM: guest, host, admin']
+  created_at TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
+Table properties {
+  property_id UUID [pk, not null, unique, note: 'Primary Key']
+  host_id UUID [ref: > users.user_id, not null]
+  name VARCHAR [not null]
+  description TEXT [not null]
+  location VARCHAR [not null]
+  pricepernight DECIMAL [not null]
+  created_at TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  updated_at TIMESTAMP [note: 'ON UPDATE CURRENT_TIMESTAMP']
+}
+
+Table bookings {
+  booking_id UUID [pk, not null, unique, note: 'Primary Key']
+  property_id UUID [ref: > properties.property_id, not null]
+  user_id UUID [ref: > users.user_id, not null]
+  start_date DATE [not null]
+  end_date DATE [not null]
+  total_price DECIMAL [not null]
+  status VARCHAR [not null, note: 'ENUM: pending, confirmed, canceled']
+  created_at TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
+Table payments {
+  payment_id UUID [pk, not null, unique, note: 'Primary Key']
+  booking_id UUID [ref: > bookings.booking_id, not null]
+  amount DECIMAL [not null]
+  payment_date TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  payment_method VARCHAR [not null, note: 'ENUM: credit_card, paypal, stripe']
+}
+
+Table reviews {
+  review_id UUID [pk, not null, unique, note: 'Primary Key']
+  property_id UUID [ref: > properties.property_id, not null]
+  user_id UUID [ref: > users.user_id, not null]
+  rating INTEGER [not null, note: 'CHECK rating between 1 and 5']
+  comment TEXT [not null]
+  created_at TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
+Table messages {
+  message_id UUID [pk, not null, unique, note: 'Primary Key']
+  sender_id UUID [ref: > users.user_id, not null]
+  recipient_id UUID [ref: > users.user_id, not null]
+  message_body TEXT [not null]
+  sent_at TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
