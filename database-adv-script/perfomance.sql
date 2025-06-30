@@ -1,11 +1,11 @@
 -- ***************************************************
 -- ALX Airbnb Database: Complex Query Optimization
 -- File: perfomance.sql
--- Description: Initial and optimized complex join queries with EXPLAIN
+-- Description: Initial and optimized complex join queries with EXPLAIN ANALYZE
 -- ***************************************************
 
 -- =============================================
--- 1. Initial Query (Unoptimized)
+-- 1. Initial Query (Unoptimized with WHERE and AND)
 -- Retrieves all bookings with user, property, and payment details
 -- =============================================
 
@@ -23,13 +23,15 @@ FROM
     bookings b
 JOIN users u ON b.user_id = u.id
 JOIN properties p ON b.property_id = p.id
-JOIN payments pay ON pay.booking_id = b.id;
+JOIN payments pay ON pay.booking_id = b.id
+WHERE 
+    b.start_date >= '2024-01-01'
+    AND u.email LIKE '%@example.com';
 
 -- =============================================
 -- 2. Optimized Query (Refactored)
--- - Uses only necessary columns
--- - Ensures indexed columns are used for joins
--- - Assumes indexes already created in previous tasks
+-- - Removes unnecessary columns
+-- - Uses indexed columns and filtered WHERE
 -- =============================================
 
 EXPLAIN ANALYZE
@@ -43,8 +45,7 @@ FROM
     bookings b
 JOIN users u ON b.user_id = u.id
 JOIN properties p ON b.property_id = p.id
-JOIN payments pay ON pay.booking_id = b.id;
-
-
--- before optimization 
-EXPLAIN ANALYZE ...
+JOIN payments pay ON pay.booking_id = b.id
+WHERE 
+    b.start_date >= '2024-01-01'
+    AND u.email LIKE '%@example.com';
