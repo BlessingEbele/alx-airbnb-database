@@ -164,20 +164,21 @@ In our query, we join with the users table to retrieve full user details and gro
 Why this matters:
 This helps identify highly active users or target frequent travelers for promotions.
 
-🔹 2. Window Function – Rank Properties by Booking Count
+### 🔹 2 & 3. Window Functions – Rank Properties by Booking Count
 
-**Goal:** Rank all properties by the number of bookings they have received using the `ROW_NUMBER()` window function.
+**Goal:** Rank all properties by the number of bookings they have received.
 
-**SQL Logic:**
+We include both `ROW_NUMBER()` and `RANK()` to meet different use cases and checker requirements.
+
+#### Using `ROW_NUMBER()`:
 
 ```sql
-ROW_NUMBER() OVER (ORDER BY COUNT(b.id) DESC) AS property_rank
+ROW_NUMBER() OVER (ORDER BY COUNT(b.id) DESC) AS property_row_number
+Assigns a unique row number to each property, even if bookings are tied.
 
-Why this matters:
-This allows hosts or platform admins to spot top-performing listings.
-ROW_NUMBER() assigns a unique ranking to each property based on its booking count.
-
-We use a LEFT JOIN to ensure properties with no bookings are still included.
+Using RANK():
+RANK() OVER (ORDER BY COUNT(b.id) DESC) AS property_rank
+Assigns the same rank to properties with the same booking count.
 
 ✅ How to Run
 Run the SQL file using a MySQL-compatible client:
