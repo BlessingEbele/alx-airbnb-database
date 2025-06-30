@@ -1,5 +1,6 @@
 -- **********************************************
 -- ALX Airbnb Database: Advanced SQL - Joins Task
+-- File: joins_queries.sql
 -- Description: Complex SQL queries using INNER JOIN, LEFT JOIN, and FULL OUTER JOIN
 -- **********************************************
 
@@ -36,7 +37,9 @@ SELECT
 FROM 
     properties p
 LEFT JOIN 
-    reviews r ON p.id = r.property_id;
+    reviews r ON p.id = r.property_id
+ORDER BY 
+    p.id;
 
 -- =============================================
 -- 3. FULL OUTER JOIN: All users and all bookings
