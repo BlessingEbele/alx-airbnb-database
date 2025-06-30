@@ -131,6 +131,70 @@ You can run the SQL file using a MySQL-compatible client or CLI:
 mysql -u your_username -p your_database < subqueries.sql
 Ensure the Airbnb database and related tables are already created and populated.
 
+# Advanced SQL: Aggregations and Window Functions
+
+## 📁 File: `aggregations_and_window_functions.sql`
+
+This file contains solutions for **Task 2: Apply Aggregations and Window Functions** as part of the **ALX Airbnb Database Advanced Module**.
+
+---
+
+## 🧠 Objective
+
+To use SQL aggregation functions and window functions to perform in-depth data analysis and ranking.
+
+---
+
+## 📌 Task Overview
+
+### 🔹 1. Aggregation – Total Bookings Per User
+
+**Goal:** Find the total number of bookings each user has made.
+
+**SQL Logic:**
+
+```sql
+SELECT 
+  user_id,
+  COUNT(*) AS total_bookings
+FROM bookings
+GROUP BY user_id;
+In our query, we join with the users table to retrieve full user details and group the result by user ID.
+
+Why this matters:
+This helps identify highly active users or target frequent travelers for promotions.
+
+🔹 2. Window Function – Rank Properties by Booking Count
+Goal: Rank all properties by the number of bookings they have received using the RANK() window function.
+
+SQL Logic:
+
+sql
+Copy
+Edit
+SELECT 
+  property_id,
+  COUNT(*) AS total_bookings,
+  RANK() OVER (ORDER BY COUNT(*) DESC) AS property_rank
+FROM bookings
+GROUP BY property_id;
+In our version, we use a LEFT JOIN to ensure all properties are included (even those with 0 bookings).
+
+Why this matters:
+This allows hosts or platform admins to spot top-performing listings.
+
+✅ How to Run
+Run the SQL file using a MySQL-compatible client:
+
+bash
+Copy
+Edit
+mysql -u your_username -p your_database < aggregations_and_window_functions.sql
+Ensure your Airbnb database and sample data are available.
+
+
+
+
 ✍️ Author
 Blessing Ebele Anochili
 ALX Software Engineering Program
