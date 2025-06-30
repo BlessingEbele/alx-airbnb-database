@@ -165,30 +165,23 @@ Why this matters:
 This helps identify highly active users or target frequent travelers for promotions.
 
 🔹 2. Window Function – Rank Properties by Booking Count
-Goal: Rank all properties by the number of bookings they have received using the RANK() window function.
 
-SQL Logic:
+**Goal:** Rank all properties by the number of bookings they have received using the `ROW_NUMBER()` window function.
 
-sql
-Copy
-Edit
-SELECT 
-  property_id,
-  COUNT(*) AS total_bookings,
-  RANK() OVER (ORDER BY COUNT(*) DESC) AS property_rank
-FROM bookings
-GROUP BY property_id;
-In our version, we use a LEFT JOIN to ensure all properties are included (even those with 0 bookings).
+**SQL Logic:**
+
+```sql
+ROW_NUMBER() OVER (ORDER BY COUNT(b.id) DESC) AS property_rank
 
 Why this matters:
 This allows hosts or platform admins to spot top-performing listings.
+ROW_NUMBER() assigns a unique ranking to each property based on its booking count.
+
+We use a LEFT JOIN to ensure properties with no bookings are still included.
 
 ✅ How to Run
 Run the SQL file using a MySQL-compatible client:
 
-bash
-Copy
-Edit
 mysql -u your_username -p your_database < aggregations_and_window_functions.sql
 Ensure your Airbnb database and sample data are available.
 
