@@ -79,6 +79,58 @@ You can run the SQL file using a MySQL-compatible client or command-line tool:
 mysql -u your_username -p your_database < joins_queries.sql
 Ensure the Airbnb database and related tables are already created and populated.
 
+
+
+# Advanced SQL: Subqueries
+
+## 📁 File: `subqueries.sql`
+
+This file contains solutions for **Task 1: Practice Subqueries** as part of the **ALX Airbnb Database Advanced Module**.
+
+---
+
+## 🧠 Objective
+
+To practice and master writing both **correlated** and **non-correlated subqueries** in SQL.
+
+---
+
+## 📌 Task Overview
+
+### 🔹 1. Non-Correlated Subquery – Properties with High Average Ratings
+
+**Goal:** Retrieve all properties where the **average review rating is greater than 4.0**
+
+**SQL Logic:**
+
+WHERE (
+  SELECT AVG(r.rating)
+  FROM reviews r
+  WHERE r.property_id = p.id
+) > 4.0;
+This subquery does not depend on the outer query row-by-row.
+
+It calculates the average rating for each property and filters accordingly.
+
+🔹 2. Correlated Subquery – Users with More Than 3 Bookings
+Goal: Retrieve users who have made more than 3 bookings
+
+SQL Logic:
+WHERE (
+  SELECT COUNT(*)
+  FROM bookings b
+  WHERE b.user_id = u.id
+) > 3;
+This subquery is correlated, meaning it depends on each row in the outer users query.
+
+For every user, it counts their bookings and includes them if the count exceeds 3.
+
+✅ How to Run
+You can run the SQL file using a MySQL-compatible client or CLI:
+
+mysql -u your_username -p your_database < subqueries.sql
+Ensure the Airbnb database and related tables are already created and populated.
+
 ✍️ Author
 Blessing Ebele Anochili
 ALX Software Engineering Program
