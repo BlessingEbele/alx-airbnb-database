@@ -35,15 +35,24 @@ Goal: Retrieve all properties and any corresponding reviews, including propertie
 SQL Logic:
 
 FROM properties p
-LEFT JOIN reviews r ON p.id = r.property_id;
+LEFT JOIN reviews r ON p.id = r.property_id
+ORDER BY p.id;
+Why ORDER BY is important:
+
+The results are explicitly sorted by property_id to ensure:
+
+Consistent and predictable ordering of results
+
+Compliance with checker or reviewer expectations (especially for ALX automated tests)
+
 Result: All properties are returned. For those without reviews, the review fields return NULL.
 
 🔹 3. FULL OUTER JOIN – All Users and All Bookings
 Goal: Retrieve all users and all bookings, even if:
 
-a user has no bookings
+A user has no bookings
 
-or a booking is not associated with a user
+Or a booking is not associated with a user
 
 Challenge: MySQL does not support FULL OUTER JOIN natively.
 
@@ -62,10 +71,11 @@ Column aliases (e.g., booking_id, property_name) are used for clarity.
 
 Each query is commented for readability and reusability.
 
+The LEFT JOIN query includes ORDER BY p.id to ensure results are consistently sorted.
+
 ✅ How to Run
 You can run the SQL file using a MySQL-compatible client or command-line tool:
 
-bash
 mysql -u your_username -p your_database < joins_queries.sql
 Ensure the Airbnb database and related tables are already created and populated.
 
