@@ -1,7 +1,7 @@
 -- ***************************************************
 -- ALX Airbnb Database: Aggregations & Window Functions
 -- File: aggregations_and_window_functions.sql
--- Description: Count total bookings per user and rank properties by bookings
+-- Description: Count total bookings per user and rank properties by bookings using ROW_NUMBER and RANK
 -- ***************************************************
 
 -- =============================================
@@ -24,15 +24,15 @@ ORDER BY
     total_bookings DESC;
 
 -- =============================================
--- 2. Window Function:
--- Rank properties based on total number of bookings using ROW_NUMBER()
+-- 2. Window Function with ROW_NUMBER():
+-- Rank properties based on total number of bookings using ROW_NUMBER
 -- =============================================
 
 SELECT 
     p.id AS property_id,
     p.name AS property_name,
     COUNT(b.id) AS total_bookings,
-    ROW_NUMBER() OVER (ORDER BY COUNT(b.id) DESC) AS property_rank
+    ROW_NUMBER() OVER (ORDER BY COUNT(b.id) DESC) AS property_row_number
 FROM 
     properties p
 LEFT JOIN 
@@ -40,3 +40,19 @@ LEFT JOIN
 GROUP BY 
     p.id, p.name;
 
+-- =============================================
+-- 3. Window Function with RANK():
+-- Rank properties based on total number of bookings using RANK
+-- =============================================
+
+SELECT 
+    p.id AS property_id,
+    p.name AS property_name,
+    COUNT(b.id) AS total_bookings,
+    RANK() OVER (ORDER BY COUNT(b.id) DESC) AS property_rank
+FROM 
+    properties p
+LEFT JOIN 
+    bookings b ON p.id = b.property_id
+GROUP BY 
+    p.id, p.name;
